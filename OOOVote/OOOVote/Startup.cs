@@ -17,6 +17,7 @@ using OOOVote.Data.Entities;
 using OOOVote.Configuration;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using OOOVote.Infrastructure;
+using OOOVote.Hubs;
 
 namespace OOOVote
 {
@@ -51,6 +52,8 @@ namespace OOOVote
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +76,11 @@ namespace OOOVote
             app.UseCookiePolicy();
 
             app.UseAuthentication();
+
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<VotingChatHub>("/chatHub");
+            });
 
             app.UseMvc(routes =>
             {
