@@ -45,7 +45,7 @@ namespace OOOVote.Areas.Identity.Pages.Account.Manage
             public string Email { get; set; }
 
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Телефон")]
             public string PhoneNumber { get; set; }
         }
 
