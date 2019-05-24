@@ -14,6 +14,9 @@ using OOOVote.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OOOVote.Data.Entities;
+using OOOVote.Configuration;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using OOOVote.Infrastructure;
 
 namespace OOOVote
 {
@@ -43,6 +46,9 @@ namespace OOOVote
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
