@@ -38,6 +38,21 @@ namespace OOOVote.Data
                 .HasOne(pt => pt.User)
                 .WithMany(t => t.Organizations)
                 .HasForeignKey(pt => pt.UserId);
+
+            modelBuilder.Entity<Organization>()
+                .Property(b => b.ShareСapital)
+                .HasDefaultValue(10_000);
+
+            modelBuilder.Entity<Organization>()
+                .Property(b => b.RulesUrl)
+                .IsRequired(false);
+
+            modelBuilder.Entity<Organization>()
+                .Property(e => e.RuleType)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (RuleType)Enum.Parse(typeof(RuleType), v)
+                );
         }
     }
 }

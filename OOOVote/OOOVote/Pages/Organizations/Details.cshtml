@@ -1,0 +1,122 @@
+﻿@page
+@model OOOVote.Pages.Organizations.DetailsModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using OOOVote.Data.Entities
+
+@{
+    ViewData["Title"] = Model.Organization.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex align-items-baseline">
+        <a class="btn btn-light" asp-page="./Index">Назад</a>
+        <h4 class="ml-3">Организация - @ViewData["Title"]</h4>
+    </div>
+
+    <div class="d-flex align-items-center">
+        <a class="btn btn-primary" asp-page="./AddUser" asp-route-id="@Model.Organization.Id">Добавить участников</a>
+        <a class="ml-2 btn btn-light" asp-page="./Edit" asp-route-id="@Model.Organization.Id">Редактировать</a> 
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="card col-6">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-6">
+                    Название
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Organization.Name)
+                </dd>
+                <dt class="col-sm-6">
+                    Дата основания
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Organization.DateFounded)
+                </dd>
+                <dt class="col-sm-6">
+                    Уставной капитал
+                </dt>
+                <dd class="col-sm-6">
+                    @Html.DisplayFor(model => model.Organization.ShareСapital) Р
+                </dd>
+                <dt class="col-sm-6">
+                    Форма управления
+                </dt>
+                <dd class="col-sm-6">
+                    @switch (Model.Organization.RuleType)
+                    {
+                        case RuleType.Single:
+                            @: <span>Единоличная</span>
+                            break;
+                        case RuleType.Collective:
+                            @: <span>Единоличная</span>
+                            break;
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="card w-100">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Участники</h5>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            Фамилия
+                        </th>
+                        <th>
+                            Имя
+                        </th>
+                        <th>
+                            Роль
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Users)
+                    {
+                        <tr>
+                            <td>
+                                @item.LastName
+                            </td>
+                            <td>
+                                @item.FirstName
+                            </td>
+                            <td>
+                                @switch (item.Role)
+                                {
+                                    case OrganizationRole.Participant:
+                                        @: <span class="badge badge-secondary">Участник</span>
+                                        break;
+
+                                    case OrganizationRole.Supervisor:
+                                        @: <span class="badge badge-light">Наблюдатель</span>
+                                        break;
+
+                                    case OrganizationRole.Auditor:
+                                        @: <span class="badge badge-warning">Ревизор</span>
+                                        break;
+
+                                    case OrganizationRole.TopManager:
+                                        <span class="badge badge-success">Член совета</span>
+                                        break;
+
+                                    case OrganizationRole.CEO:
+                                        @: <span class="badge badge-success">Директор</span>
+                                        break;
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
