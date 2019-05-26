@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OOOVote.Data;
@@ -9,9 +10,10 @@ using OOOVote.Data;
 namespace OOOVote.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190525141543_AddVotings")]
+    partial class AddVotings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,8 +269,6 @@ namespace OOOVote.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedDate");
-
-                    b.Property<string>("Message");
 
                     b.Property<Guid>("UserId");
 

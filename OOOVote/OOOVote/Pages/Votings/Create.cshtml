@@ -1,0 +1,54 @@
+﻿@page
+@model OOOVote.Pages.CreateModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Create</h3>
+
+<h4>Voting</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Voting.Subject" class="control-label"></label>
+                <input asp-for="Voting.Subject" class="form-control" />
+                <span asp-validation-for="Voting.Subject" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Voting.Description" class="control-label"></label>
+                <input asp-for="Voting.Description" class="form-control" />
+                <span asp-validation-for="Voting.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Voting.StartDate" class="control-label"></label>
+                <input asp-for="Voting.StartDate" class="form-control" />
+                <span asp-validation-for="Voting.StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Voting.EndDate" class="control-label"></label>
+                <input asp-for="Voting.EndDate" class="form-control" />
+                <span asp-validation-for="Voting.EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Voting.OrganizationId" class="control-label"></label>
+                <select asp-for="Voting.OrganizationId" class="form-control" asp-items="ViewBag.OrganizationId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

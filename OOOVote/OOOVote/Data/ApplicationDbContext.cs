@@ -10,6 +10,12 @@ namespace OOOVote.Data
     public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
     {
         public DbSet<Organization> Organizations { get; set; }
+        public DbSet<InvitationCode> InvitationCodes { get; set; }
+
+        public DbSet<Voting> Votings { get; set; }
+
+        public DbSet<VotingOption> VotingOptions { get; set; }
+        public DbSet<VotingMessage> VotingMessages { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -24,6 +30,13 @@ namespace OOOVote.Data
 
             modelBuilder.Entity<OrganizationUser>()
                 .Property(e => e.OrganizationRole)
+                .HasConversion(
+                    v => v.ToString(),
+                    v => (OrganizationRole)Enum.Parse(typeof(OrganizationRole), v)
+                );
+
+            modelBuilder.Entity<InvitationCode>()
+                .Property(e => e.InitialRole)
                 .HasConversion(
                     v => v.ToString(),
                     v => (OrganizationRole)Enum.Parse(typeof(OrganizationRole), v)

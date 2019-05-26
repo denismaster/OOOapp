@@ -26,7 +26,7 @@ namespace OOOVote.Infrastructure
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("Joe@contoso.com", "Joe Smith"),
+                From = new EmailAddress("no-reply@ooovote.com", "OOOVote"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message
