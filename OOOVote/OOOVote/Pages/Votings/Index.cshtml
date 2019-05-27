@@ -12,51 +12,84 @@
     <a class="btn btn-primary" asp-page="Create">Новое голосование</a>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Voting[0].Subject)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Voting[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Voting[0].StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Voting[0].EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Voting[0].Organization)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Voting) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Organization.Id)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<h4>Активные голосования</h4>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Тема голосования
+                    </th>
+                    <th>
+                        Организация
+                    </th>
+                    <th>
+                        Дата окончания
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Voting.Where(v => v.EndDate >= DateTime.UtcNow))
+                {
+                    <tr>
+                        <td>
+                            <a asp-page="./Details" asp-route-id="@item.Id">
+                                @item.Subject
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-page="../Organizations/Details" asp-route-id="@item.Organization.Id">
+                                @item.Organization.Name
+                            </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+<h4>Завершенные голосования</h4>
+<div class="card">
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Тема голосования
+                    </th>
+                    <th>
+                        Организация
+                    </th>
+                    <th>
+                        Дата окончания
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Voting.Where(v => v.EndDate < DateTime.UtcNow))
+                {
+                    <tr>
+                        <td>
+                            <a asp-page="./Details" asp-route-id="@item.Id">
+                                @item.Subject
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-page="../Organizations/Details" asp-route-id="@item.Organization.Id">
+                                @item.Organization.Name
+                            </a>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EndDate)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

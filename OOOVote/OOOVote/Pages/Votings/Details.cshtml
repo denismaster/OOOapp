@@ -93,38 +93,58 @@
                 </script>
             }
             <hr />
-            <h5 class="card-title">Повестка голосования</h5>
-            <div class="accordion" id="accordionExample">
-                @foreach (var item in Model.Voting.VotingOptions)
-                {
-                    <div class="card">
-                        <div class="card-header p-0" id="headingOne">
-                            <div class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                    @item.Title
-                                </button>
-                            </div>
-                        </div>
+            @if (!Model.ShowResults)
+            {
+                <h5 class="card-title">Повестка голосования</h5>
+                <form method="post">
+                    <div class="accordion" id="accordionExample">
+                        @foreach (var item in Model.Voting.VotingOptions)
+                        {
+                            <div class="card">
+                                <div class="card-header p-0" id="headingOne">
+                                    <div class="mb-0">
+                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            @item.Title
+                                        </button>
+                                    </div>
+                                </div>
 
-                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                            <div class="card-body">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                    <label class="form-check-label" for="inlineRadio1">За</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                    <label class="form-check-label" for="inlineRadio2">Против</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-                                    <label class="form-check-label" for="inlineRadio3">Воздерживаюсь</label>
+                                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="UserVotes[item.Id]" class="form-check-input" type="radio" value="0">
+                                            <label class="form-check-label" for="inlineRadio1">За</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="UserVotes[item.Id]" class="form-check-input" type="radio" value="1">
+                                            <label class="form-check-label" for="inlineRadio2">Против</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input asp-for="UserVotes[item.Id]" class="form-check-input" type="radio" value="2" checked>
+                                            <label class="form-check-label" for="inlineRadio3">Воздерживаюсь</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Проголосовать" class="btn btn-primary" />
+                    </div>
+                </form>
+            }
+            else
+            {
+                @foreach (var item in Model.VotingResults)
+                {
+                    <h6>@item.Key</h6>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: @(item.Value.AgreeCount/Model.UserCount*100)%">За - @(item.Value.AgreeCount)</div>
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: @(item.Value.DisagreeCount/Model.UserCount*100)%">Против - @(item.Value.DisagreeCount)</div>
+                        <div class="progress-bar bg-secondary" role="progressbar" style="width: @(item.Value.NotVotedCount/Model.UserCount*100)%">Воздержались - @(item.Value.NotVotedCount)</div>
                     </div>
                 }
-            </div>
+            }
         </div>
     </div>
 </div>

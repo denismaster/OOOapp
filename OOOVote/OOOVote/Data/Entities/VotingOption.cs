@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace OOOVote.Data.Entities
 {
@@ -10,5 +11,7 @@ namespace OOOVote.Data.Entities
 
         public Guid VotingId { get; set; }
         public Voting Voting { get; set; }
+
+        public List<UserVotingDecision> Decisions { get; set; }
     }
 }
