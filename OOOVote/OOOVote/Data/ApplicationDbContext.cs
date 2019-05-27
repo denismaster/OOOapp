@@ -16,6 +16,7 @@ namespace OOOVote.Data
 
         public DbSet<VotingOption> VotingOptions { get; set; }
         public DbSet<VotingMessage> VotingMessages { get; set; }
+        public DbSet<UserVotingDecision> VotingDecisions { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
