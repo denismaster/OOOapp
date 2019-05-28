@@ -1,14 +1,13 @@
 ﻿@page
 @model OOOVote.Pages.Organizations.EditModel
-
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактирование организации";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h3>@ViewData["Title"]</h3>
 
-<h4>Organization</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,24 +15,50 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Organization.Id" />
             <div class="form-group">
-                <label asp-for="Organization.Name" class="control-label"></label>
+                <label asp-for="Organization.Name" class="control-label">Название организации</label>
                 <input asp-for="Organization.Name" class="form-control" />
                 <span asp-validation-for="Organization.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Organization.DateFounded" class="control-label"></label>
+                <label asp-for="Organization.ShareСapital" class="control-label">
+                    Уставной капитал
+                </label>
+                <div class="input-group">
+                    <input type="number" asp-for="Organization.ShareСapital" class="form-control" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">Р</span>
+                    </div>
+                </div>
+                <span asp-validation-for="Organization.ShareСapital" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Organization.RuleType" class="control-label">
+                    Форма управления
+                </label>
+                <select asp-for="Organization.RuleType" class="form-control">
+                    <option value="0">Единоличная</option>
+                    <option value="1">Коллективная</option>
+                </select>
+                <span asp-validation-for="Organization.RuleType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Organization.RulesUrl" class="control-label">
+                    Устав
+                </label>
+                <input asp-for="Organization.RulesUrl" class="form-control" />
+                <span asp-validation-for="Organization.RulesUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Organization.DateFounded" class="control-label">Дата основания</label>
                 <input asp-for="Organization.DateFounded" class="form-control" />
                 <span asp-validation-for="Organization.DateFounded" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранитьо" class="btn btn-primary" />
+                <a class="btn btn-light" asp-page="Details" asp-route-id="@Model.Organization.Id">Назад</a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-page="./Index">Back to List</a>
 </div>
 
 @section Scripts {

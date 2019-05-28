@@ -51,7 +51,22 @@ namespace OOOVote.Pages
                 return Page();
             }
 
+            if (Voting.VotingOptions == null)
+            {
+                Voting.VotingOptions = new List<VotingOption>();
+            }
+
+            var votingOptions = Options
+                .Select(o => new VotingOption
+                {
+                    Title = o
+                })
+                .ToList();
+
+            Voting.VotingOptions = votingOptions;
+
             _context.Votings.Add(Voting);
+
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

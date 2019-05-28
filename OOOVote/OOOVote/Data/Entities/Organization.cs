@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace OOOVote.Data.Entities
 {
@@ -22,6 +21,8 @@ namespace OOOVote.Data.Entities
         public Guid Id { get; set; }
         public string Name { get; set; }
         public DateTime DateFounded { get; set; }
+
+        [Range(10000, double.MaxValue)]
         public decimal ShareСapital { get; set; }
         public string RulesUrl { get; set; }
 

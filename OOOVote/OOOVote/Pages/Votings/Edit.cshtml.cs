@@ -37,7 +37,7 @@ namespace OOOVote.Pages
             {
                 return NotFound();
             }
-           ViewData["OrganizationId"] = new SelectList(_context.Organizations, "Id", "Id");
+           ViewData["OrganizationId"] = new SelectList(_context.Organizations, "Id", "Name");
             return Page();
         }
 

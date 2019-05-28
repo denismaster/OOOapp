@@ -2,13 +2,12 @@
 @model OOOVote.Pages.EditModel
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Редактирование голосования";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h3>@ViewData["Title"]</h3>
 
-<h4>Voting</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,32 +15,33 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Voting.Id" />
             <div class="form-group">
-                <label asp-for="Voting.Subject" class="control-label"></label>
+                <label asp-for="Voting.Subject" class="control-label">Тема голосования</label>
                 <input asp-for="Voting.Subject" class="form-control" />
                 <span asp-validation-for="Voting.Subject" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Voting.Description" class="control-label"></label>
+                <label asp-for="Voting.Description" class="control-label">Описание</label>
                 <input asp-for="Voting.Description" class="form-control" />
                 <span asp-validation-for="Voting.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Voting.StartDate" class="control-label"></label>
+                <label asp-for="Voting.StartDate" class="control-label">Дата начала</label>
                 <input asp-for="Voting.StartDate" class="form-control" />
                 <span asp-validation-for="Voting.StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Voting.EndDate" class="control-label"></label>
+                <label asp-for="Voting.EndDate" class="control-label">Дата окончания</label>
                 <input asp-for="Voting.EndDate" class="form-control" />
                 <span asp-validation-for="Voting.EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Voting.OrganizationId" class="control-label"></label>
+                <label asp-for="Voting.OrganizationId" class="control-label">Организация</label>
                 <select asp-for="Voting.OrganizationId" class="form-control" asp-items="ViewBag.OrganizationId"></select>
                 <span asp-validation-for="Voting.OrganizationId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <a class="btn btn-light" asp-page="Details" asp-route-id="@Model.Voting.Id">Назад</a>
             </div>
         </form>
     </div>

@@ -9,9 +9,10 @@
 <h3>@ViewData["Title"]</h3>
 
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
+<form method="post">
+    <div class="row">
+        <div class="col-md-4">
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Voting.Subject" class="control-label">Тема голосования</label>
@@ -41,18 +42,33 @@
                 <input type="submit" value="Добавить" class="btn btn-primary" />
                 <a class="btn btn-light" asp-page="Index">Назад</a>
             </div>
-        </form>
+
+        </div>
+        <div class="col-md-6">
+            <h5>Повестка дня</h5>
+            <hr />
+            <div id="fields"></div>
+
+            <button id="btnAddField" class="btn btn-light">Добавить поле</button>
+
+            <script type="text/javascript">
+
+                var fields = document.querySelector('#fields');
+                var addFieldButton = document.querySelector('#btnAddField');
+
+                addFieldButton.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    var input = document.createElement("input");
+                    input.classList.add('form-control');
+                    input.classList.add('mb-3');
+                    input.name = "Options";
+
+                    fields.append(input);
+                })
+            </script>
+        </div>
     </div>
-    <div class="col-md-6">
-        <h5>Повестка дня</h5>
-        @for (int i=0; i < Model.Options.Count; i++)
-        {
-            <div class="form-group">
-                <input asp-for="Options[i]" class="form-control" />
-            </div>
-        }
-    </div>
-</div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
