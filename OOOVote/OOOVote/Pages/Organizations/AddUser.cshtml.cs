@@ -29,7 +29,6 @@ namespace OOOVote.Pages.Organizations
         [BindProperty]
         public InputModel Input { get; set; }
 
-        [BindProperty]
         public Organization Organization { get; set; }
 
         public class InputModel
@@ -61,14 +60,14 @@ namespace OOOVote.Pages.Organizations
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(Guid? id)
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            Organization = await _context.Organizations.Include(o => o.Users).FirstOrDefaultAsync(m => m.Id == Organization.Id);
+            Organization = await _context.Organizations.Include(o => o.Users).FirstOrDefaultAsync(m => m.Id == id);
 
             var existingUser = await _userManager.FindByEmailAsync(Input.Email);
 
@@ -100,9 +99,9 @@ namespace OOOVote.Pages.Organizations
                 await _context.SaveChangesAsync();
 
                 var callbackUrl = Url.Page(
-                    "/Identity/Account/Register",
+                    "/Account/Register",
                     pageHandler: null,
-                    values: new { InvitationCode = invitationCode.Code },
+                    values: new { area = "Identity", code = invitationCode.Code },
                     protocol: Request.Scheme);
 
                 await _emailSender.SendEmailAsync(

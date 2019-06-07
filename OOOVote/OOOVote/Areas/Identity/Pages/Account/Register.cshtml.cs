@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using OOOVote.Data;
 using OOOVote.Data.Entities;
 
 namespace OOOVote.Areas.Identity.Pages.Account
@@ -17,6 +19,7 @@ namespace OOOVote.Areas.Identity.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<User> _signInManager;
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
@@ -24,11 +27,13 @@ namespace OOOVote.Areas.Identity.Pages.Account
         public RegisterModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
+            ApplicationDbContext context,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -37,6 +42,8 @@ namespace OOOVote.Areas.Identity.Pages.Account
         public InputModel Input { get; set; }
 
         public string ReturnUrl { get; set; }
+
+        public Guid? Code { get; set; }
 
         public class InputModel
         {
@@ -65,27 +72,54 @@ namespace OOOVote.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
         }
 
-        public void OnGet(string returnUrl = null)
+        public void OnGet(string returnUrl = null, Guid? code = null)
         {
+            Code = code;
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string returnUrl = null, Guid? code = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+            code = Code ?? code;
             if (ModelState.IsValid)
             {
                 var user = new User { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName };
                 var result = await _userManager.CreateAsync(user, Input.Password);
+                
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    if (code != null)
+                    {
+                        var invitationCode = await _context.InvitationCodes.FirstOrDefaultAsync(c => c.Code == code);
+
+                        if (invitationCode == null)
+                        {
+                            ModelState.AddModelError(string.Empty, "Некорректный код");
+                            return Page();
+                        }
+
+                        var organization = await _context.Organizations
+                            .Include(o => o.Users)
+                            .FirstOrDefaultAsync(c => c.Id == invitationCode.OrganizationId);
+
+                        organization.Users.Add(new OrganizationUser
+                        {
+                            UserId = user.Id,
+                            OrganizationId = organization.Id,
+                            OrganizationRole = invitationCode.InitialRole
+                        });
+
+                        await _context.SaveChangesAsync();
+                    }
+
+                    var confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { userId = user.Id, code = code },
+                        values: new { userId = user.Id, code = confirmationCode },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
