@@ -139,9 +139,9 @@
                 {
                     <h6>@item.Key</h6>
                     <div class="progress">
-                        <div class="progress-bar bg-success" role="progressbar" style="width: @(item.Value.AgreeCount/Model.UserCount*100)%">За - @(item.Value.AgreeCount)</div>
-                        <div class="progress-bar bg-danger" role="progressbar" style="width: @(item.Value.DisagreeCount/Model.UserCount*100)%">Против - @(item.Value.DisagreeCount)</div>
-                        <div class="progress-bar bg-secondary" role="progressbar" style="width: @(item.Value.NotVotedCount/Model.UserCount*100)%">Воздержались - @(item.Value.NotVotedCount)</div>
+                        <div class="progress-bar bg-success" role="progressbar" style="width: @(item.Value.AgreeCount*1.0/Model.UserCount*100)%">За - @(item.Value.AgreeCount)</div>
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: @(item.Value.DisagreeCount*1.0/Model.UserCount*100)%">Против - @(item.Value.DisagreeCount)</div>
+                        <div class="progress-bar bg-secondary" role="progressbar" style="width: @(item.Value.NotVotedCount*1.0/Model.UserCount*100)%">Воздержались - @(item.Value.NotVotedCount)</div>
                     </div>
                 }
             }
