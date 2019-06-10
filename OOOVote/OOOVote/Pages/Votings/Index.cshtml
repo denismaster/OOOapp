@@ -30,7 +30,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Voting.Where(v => v.EndDate >= DateTime.UtcNow))
+                @foreach (var item in Model.Voting.Where(v => v.EndDate >= DateTime.Now))
                 {
                     <tr>
                         <td>
@@ -71,7 +71,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.Voting.Where(v => v.EndDate < DateTime.UtcNow))
+                @foreach (var item in Model.Voting.Where(v => v.EndDate < DateTime.Now))
                 {
                     <tr>
                         <td>
