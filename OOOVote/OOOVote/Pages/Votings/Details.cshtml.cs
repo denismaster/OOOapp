@@ -260,7 +260,7 @@ namespace OOOVote.Pages
             })
             .MainTableTemplate(template =>
             {
-                template.BasicTemplate(BasicTemplate.ClassicTemplate);
+                template.BasicTemplate(BasicTemplate.SimpleTemplate);
             })
             .MainTablePreferences(table =>
             {
