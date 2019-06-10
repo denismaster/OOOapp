@@ -17,6 +17,8 @@ namespace OOOVote.Pages
         public int DisagreeCount { get; set; }
         public int NotVotedCount { get; set; }
 
+        public int AllVotedCount { get; set; }
+
     }
     public class DetailsModel : PageModel
     {
@@ -39,6 +41,9 @@ namespace OOOVote.Pages
 
         [BindProperty]
         public bool ShowResults { get; set; } = false;
+
+        [BindProperty]
+        public bool IsVotingEnded { get; set; } = false;
 
         [BindProperty]
         public int UserCount { get; set; } = 0;
@@ -82,7 +87,11 @@ namespace OOOVote.Pages
 
             bool hasUserDecisions = userDecisions.Count >= Voting.VotingOptions.Count;
 
-            ShowResults = hasUserDecisions || Voting.EndDate < DateTime.UtcNow;
+            ShowResults = hasUserDecisions || Voting.EndDate < DateTime.Now;
+
+            IsVotingEnded = Voting.EndDate < DateTime.Now || Voting.VotingOptions
+                .Select(v => v.Decisions)
+                .All(d => d.Count >= UserCount * 0.51);
 
             if (ShowResults)
             {
@@ -95,11 +104,12 @@ namespace OOOVote.Pages
                               AgreeCount = vx.Decisions.Count(x => x.Decision == VoteDecision.Agree),
                               DisagreeCount = vx.Decisions.Count(x => x.Decision == VoteDecision.Disagree),
                               NotVotedCount = vx.Decisions.Count(x => x.Decision == VoteDecision.NotVoted),
+                              AllVotedCount = vx.Decisions.Count()
                           };
                       });
             }
 
-            
+
 
 
             return Page();

@@ -143,6 +143,22 @@
                         <div class="progress-bar bg-danger" role="progressbar" style="width: @(item.Value.DisagreeCount*1.0/Model.UserCount*100)%">Против - @(item.Value.DisagreeCount)</div>
                         <div class="progress-bar bg-secondary" role="progressbar" style="width: @(item.Value.NotVotedCount*1.0/Model.UserCount*100)%">Воздержались - @(item.Value.NotVotedCount)</div>
                     </div>
+                    @if (Model.IsVotingEnded)
+                    {
+                        if (item.Value.AgreeCount * 1.0 / Model.UserCount * 100 > 51)
+                        {
+                            <span class="text-success">Принято решение - ЗА</span>
+                        }
+                        if (item.Value.AgreeCount * 1.0 / Model.UserCount * 100 > 51)
+                        {
+                            <span class="text-danger">Принято решение - ПРОТИВ</span>
+                        }
+                        if (item.Value.AllVotedCount* 1.0 / Model.UserCount*100 < 51 ||
+                            item.Value.NotVotedCount* 1.0 / Model.UserCount*100 > 51)
+                        {
+                            <span class="text-secondary">Нет кворума</span>
+                        }
+                    }
                 }
             }
         </div>
