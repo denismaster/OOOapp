@@ -67,13 +67,13 @@ namespace OOOVote.Pages.Organizations
 
             var currentRole = Organization.Users.FirstOrDefault(ou => ou.UserId == userId)?.OrganizationRole;
 
-            if(currentRole == null || currentRole != OrganizationRole.CEO || currentRole!=OrganizationRole.TopManager)
+            if(currentRole == OrganizationRole.CEO || currentRole==OrganizationRole.TopManager)
             {
-                CanEditOrganization = false;
+                CanEditOrganization = true;
             }
             else
             {
-                CanEditOrganization = true;
+                CanEditOrganization = false;
             }
 
             return Page();
